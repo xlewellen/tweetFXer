@@ -2,14 +2,9 @@ const {Client, GatewayIntentBits } = require('discord.js')
 const dotenv = require('dotenv')
 dotenv.config()
 
-const fs = require("fs");
+var fs = require("fs");
 
-const quotes = [
-    ["FUCK YOU FUCK YOU FUCK YOU FUCK YOU FUCK YOU", "Based and blacklisted", "You think this blacklist will work? Copium", "Sebastian told me to call you the N-word"],
-    ["You're already on the blacklist. Kinda weirdchamp", "ruh roh, squawkward"],
-    ["Cringe and whitelisted", "You're off the blacklist? That's a Jerma reference!", "Off the blacklist POGGIES!", "I'll send you down to whitelist town"],
-    ["I would never put you on the blacklist king", "birdshirt"]
-]
+var quotes = []
 
 var expression = /https:\/\/twitter\.com\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/gi;
 var regex = new RegExp(expression);
@@ -38,6 +33,26 @@ function jsonReader(filePath, cb) {
 
 
 client.on('ready', () => {
+    //Check for blacklist
+    try {
+        if (!fs.existsSync("./blacklist.json")) {
+            var dict = {}
+            var dictstring = JSON.stringify(dict);
+            fs.writeFile("blacklist.json", dictstring, function(err, result) {
+                if(err) console.log('error', err);
+            });
+        }
+    } catch(err) {
+        console.error(err)
+    }
+    //Import quotes
+    try {
+        const jsonString = fs.readFileSync("./quotes.json");
+        quotes = JSON.parse(jsonString);
+    } catch (err) {
+        console.log(err);
+        return;
+    }
     console.log('READY TO FIX SOME TWEETS SIR!')
 })
 
