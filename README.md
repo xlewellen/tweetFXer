@@ -1,0 +1,1 @@
+This is a simple discord bot meant to automatically reformat the videos embedded in tweets to properly display when their URLs are pasted into a discord channel. This is accomplished by using dangeredWolf's (https://github.com/dangeredwolf) TweetFixer project.
